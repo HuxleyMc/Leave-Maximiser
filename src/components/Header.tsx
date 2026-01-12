@@ -1,8 +1,7 @@
 import { Link } from "@tanstack/solid-router";
-import { Globe, Home, Menu, X } from "lucide-solid";
+import { Home, Menu, X } from "lucide-solid";
 
 import { createSignal } from "solid-js";
-import TanStackQueryHeaderUser from "../integrations/tanstack-query/header-user.tsx";
 
 export default function Header() {
 	const [isOpen, setIsOpen] = createSignal(false);
@@ -14,6 +13,7 @@ export default function Header() {
 		<>
 			<header class="p-4 flex items-center bg-gray-800 text-white shadow-lg">
 				<button
+					type="button"
 					onClick={() => setIsOpen(true)}
 					class="p-2 hover:bg-gray-700 rounded-lg transition-colors"
 					aria-label="Open menu"
@@ -39,6 +39,7 @@ export default function Header() {
 				<div class="flex items-center justify-between p-4 border-b border-gray-700">
 					<h2 class="text-xl font-bold">Navigation</h2>
 					<button
+						type="button"
 						onClick={() => setIsOpen(false)}
 						class="p-2 hover:bg-gray-800 rounded-lg transition-colors"
 						aria-label="Close menu"
@@ -60,67 +61,7 @@ export default function Header() {
 						<Home size={20} />
 						<span class="font-medium">Home</span>
 					</Link>
-
-					{/* Demo Links Start */}
-
-					<Link
-						to="/demo/start/server-funcs"
-						onClick={() => setIsOpen(false)}
-						class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-						activeProps={{
-							class:
-								"flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-						}}
-					>
-						<Globe size={20} />
-						<span class="font-medium">Start - Server Functions</span>
-					</Link>
-
-					<Link
-						to="/demo/form"
-						onClick={() => setIsOpen(false)}
-						class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-						activeProps={{
-							class:
-								"flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-						}}
-					>
-						<Globe size={20} />
-						<span class="font-medium">Form</span>
-					</Link>
-
-					<Link
-						to="/demo/store"
-						onClick={() => setIsOpen(false)}
-						class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-						activeProps={{
-							class:
-								"flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-						}}
-					>
-						<Globe size={20} />
-						<span class="font-medium">Store</span>
-					</Link>
-
-					<Link
-						to="/demo/tanstack-query"
-						onClick={() => setIsOpen(false)}
-						class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-						activeProps={{
-							class:
-								"flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-						}}
-					>
-						<Globe size={20} />
-						<span class="font-medium">TanStack Query</span>
-					</Link>
-
-					{/* Demo Links End */}
 				</nav>
-
-				<div class="p-4 border-t border-gray-700 bg-gray-800 flex flex-col gap-2">
-					<TanStackQueryHeaderUser />
-				</div>
 			</aside>
 		</>
 	);
