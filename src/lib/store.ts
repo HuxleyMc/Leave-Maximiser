@@ -7,11 +7,13 @@ export interface AppState {
 	year: number;
 }
 
+const currentYear = new Date().getFullYear();
+
 export const store = new Store<AppState>({
 	countryCode: "AU",
 	stateCode: "QLD",
 	annualLeave: 20,
-	year: 2025,
+	year: currentYear,
 });
 
 export const updateState = (updates: Partial<AppState>) => {

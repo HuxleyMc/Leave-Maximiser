@@ -40,7 +40,12 @@ describe("maximiser", () => {
 	});
 
 	test("maximizeLeave returns efficient leave periods", () => {
-		const result = maximizeLeave(2025, 2, mockHolidays);
+		const testYear = 2031;
+		const testHolidays = mockHolidays.map((h) => ({
+			...h,
+			date: h.date.replace("2025", testYear.toString()),
+		}));
+		const result = maximizeLeave(testYear, 2, testHolidays);
 		expect(result.leavePeriods.length).toBeGreaterThan(0);
 		const period = result.leavePeriods[0];
 		expect(period.daysOff).toBe(5);

@@ -26,6 +26,9 @@ export function maximizeLeave(
 	annualLeaveDays: number,
 	holidays: PublicHoliday[],
 ): MaximizationResult {
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+
 	const startDate = new Date(year, 0, 1);
 	const endDate = new Date(year, 11, 31);
 
@@ -41,6 +44,8 @@ export function maximizeLeave(
 	const potentialPeriods: LeavePeriod[] = [];
 
 	for (let i = 0; i < allDays.length; i++) {
+		if (allDays[i].date < today) continue;
+
 		for (let j = i + 2; j < Math.min(i + 20, allDays.length); j++) {
 			const period = allDays.slice(i, j + 1);
 			const leaveDaysNeeded = period.filter((d) => !d.isOff).length;

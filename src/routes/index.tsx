@@ -152,6 +152,7 @@ function Home() {
 											id="year"
 											type="number"
 											value={year()}
+											min={new Date().getFullYear()}
 											onInput={(e) => setYear(Number(e.target.value))}
 											class="w-full bg-slate-900/50 border border-slate-600 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
 										/>
