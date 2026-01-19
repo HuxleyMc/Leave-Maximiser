@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/solid-router";
 import { useStore } from "@tanstack/solid-store";
 import { createEffect, createSignal, For, Show } from "solid-js";
+import CalendarView from "../components/CalendarView";
 import { getHolidays } from "../lib/holidays";
 import { maximizeLeave } from "../lib/maximiser";
 import { store, updateState } from "../lib/store";
@@ -33,6 +34,7 @@ function Home() {
 	const [results, setResults] = createSignal<MaximizationResult | null>(null);
 	const [error, setError] = createSignal<string | null>(null);
 	const [holidays, setHolidays] = createSignal<PublicHoliday[]>([]);
+	const [viewMode, setViewMode] = createSignal<"list" | "calendar">("list");
 
 	const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 		day: "numeric",
@@ -315,80 +317,119 @@ function Home() {
 										</div>
 									</div>
 
-									<div>
-										<h3 class="text-xl font-semibold text-white mb-4 pl-1">
-											Suggested Leave Periods
-										</h3>
-										<div class="space-y-4">
-											<For each={res().leavePeriods}>
-												{(period) => (
-													<div class="group relative bg-slate-800 hover:bg-slate-750 border border-slate-700 rounded-2xl p-6 transition-all hover:shadow-lg hover:shadow-cyan-900/20 hover:border-cyan-500/30 overflow-hidden">
-														<div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-500 to-blue-600"></div>
+									<div class="flex justify-center mb-6">
+										<div class="bg-slate-800/50 p-1 rounded-lg flex gap-1 border border-slate-700/50">
+											<button
+												type="button"
+												onClick={() => setViewMode("list")}
+												class={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+													viewMode() === "list"
+														? "bg-slate-700 text-white shadow-sm"
+														: "text-slate-400 hover:text-white hover:bg-slate-700/50"
+												}`}
+											>
+												List View
+											</button>
+											<button
+												type="button"
+												onClick={() => setViewMode("calendar")}
+												class={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+													viewMode() === "calendar"
+														? "bg-slate-700 text-white shadow-sm"
+														: "text-slate-400 hover:text-white hover:bg-slate-700/50"
+												}`}
+											>
+												Calendar View
+											</button>
+										</div>
+									</div>
 
-														<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-															<div class="flex-1">
-																<div class="flex items-baseline gap-3 mb-2">
-																	<span class="text-2xl font-bold text-white">
-																		{dateFormatter.format(
-																			new Date(period.start),
-																		)}
-																	</span>
-																	<span class="text-slate-500 font-light">
-																		to
-																	</span>
-																	<span class="text-2xl font-bold text-white">
-																		{dateFormatter.format(new Date(period.end))}
-																	</span>
-																</div>
-																<div class="flex flex-wrap gap-2">
-																	<For each={period.holidays}>
-																		{(h) => (
-																			<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-300 border border-blue-500/20">
-																				{h.name}
-																			</span>
-																		)}
-																	</For>
-																</div>
-															</div>
+									<Show when={viewMode() === "list"}>
+										<div>
+											<h3 class="text-xl font-semibold text-white mb-4 pl-1">
+												Suggested Leave Periods
+											</h3>
+											<div class="space-y-4">
+												<For each={res().leavePeriods}>
+													{(period) => (
+														<div class="group relative bg-slate-800 hover:bg-slate-750 border border-slate-700 rounded-2xl p-6 transition-all hover:shadow-lg hover:shadow-cyan-900/20 hover:border-cyan-500/30 overflow-hidden">
+															<div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-500 to-blue-600"></div>
 
-															<div class="flex items-center gap-6">
-																<div class="text-center">
-																	<div class="text-xs text-slate-400 uppercase tracking-wider mb-1">
-																		Take
+															<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+																<div class="flex-1">
+																	<div class="flex items-baseline gap-3 mb-2">
+																		<span class="text-2xl font-bold text-white">
+																			{dateFormatter.format(
+																				new Date(period.start),
+																			)}
+																		</span>
+																		<span class="text-slate-500 font-light">
+																			to
+																		</span>
+																		<span class="text-2xl font-bold text-white">
+																			{dateFormatter.format(
+																				new Date(period.end),
+																			)}
+																		</span>
 																	</div>
-																	<div class="text-xl font-bold text-slate-200">
-																		{period.leaveDaysRequired}
+																	<div class="flex flex-wrap gap-2">
+																		<For each={period.holidays}>
+																			{(h) => (
+																				<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-300 border border-blue-500/20">
+																					{h.name}
+																				</span>
+																			)}
+																		</For>
 																	</div>
 																</div>
-																<div class="w-px h-8 bg-slate-700"></div>
-																<div class="text-center">
-																	<div class="text-xs text-slate-400 uppercase tracking-wider mb-1">
-																		Get
+
+																<div class="flex items-center gap-6">
+																	<div class="text-center">
+																		<div class="text-xs text-slate-400 uppercase tracking-wider mb-1">
+																			Take
+																		</div>
+																		<div class="text-xl font-bold text-slate-200">
+																			{period.leaveDaysRequired}
+																		</div>
 																	</div>
-																	<div class="text-xl font-bold text-cyan-400">
-																		{period.daysOff}
+																	<div class="w-px h-8 bg-slate-700"></div>
+																	<div class="text-center">
+																		<div class="text-xs text-slate-400 uppercase tracking-wider mb-1">
+																			Get
+																		</div>
+																		<div class="text-xl font-bold text-cyan-400">
+																			{period.daysOff}
+																		</div>
 																	</div>
-																</div>
-																<div class="hidden md:block w-px h-8 bg-slate-700"></div>
-																<div class="hidden md:block text-center min-w-[60px]">
-																	<div class="text-xs text-slate-400 uppercase tracking-wider mb-1">
-																		Eff
-																	</div>
-																	<div class="text-lg font-bold text-white">
-																		{(
-																			period.daysOff /
-																			(period.leaveDaysRequired || 1)
-																		).toFixed(1)}
-																		x
+																	<div class="hidden md:block w-px h-8 bg-slate-700"></div>
+																	<div class="hidden md:block text-center min-w-[60px]">
+																		<div class="text-xs text-slate-400 uppercase tracking-wider mb-1">
+																			Eff
+																		</div>
+																		<div class="text-lg font-bold text-white">
+																			{(
+																				period.daysOff /
+																				(period.leaveDaysRequired || 1)
+																			).toFixed(1)}
+																			x
+																		</div>
 																	</div>
 																</div>
 															</div>
 														</div>
-													</div>
-												)}
-											</For>
+													)}
+												</For>
+											</div>
 										</div>
-									</div>
+									</Show>
+
+									<Show when={viewMode() === "calendar"}>
+										<CalendarView
+											year={year()}
+											holidays={holidays()}
+											leavePeriods={res().leavePeriods}
+										/>
+									</Show>
 								</div>
 							)}
 						</Show>
