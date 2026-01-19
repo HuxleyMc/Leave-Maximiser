@@ -53,7 +53,7 @@ const LEGEND_ITEMS = [
 		id: "period-leave",
 		label: "Period Day",
 		colorClass: "bg-cyan-500/20 text-cyan-200",
-		title: "Weekend or holiday within your leave period",
+		title: "Weekend within your leave period",
 	},
 	{
 		id: "holiday",
@@ -138,15 +138,23 @@ function MonthCard(props: MonthCardProps) {
 		const isHoliday = isPublicHoliday(date, props.holidays);
 		const isWknd = isWeekend(date);
 
+		// If it's a public holiday, we want to show that distinctively,
+		// even if it's inside a leave period.
+		if (isHoliday) return "holiday";
+
 		if (activePeriod) {
-			if (isHoliday) return "period-holiday";
 			if (isWknd) return "period-weekend";
 			return "leave-day"; // This is a day you take off
 		}
 
-		if (isHoliday) return "holiday";
 		if (isWknd) return "weekend";
 		return "normal";
+	};
+
+	const getHolidayName = (date: Date) => {
+		const dateStr = date.toISOString().split("T")[0];
+		const holiday = props.holidays.find((h) => h.date === dateStr);
+		return holiday ? holiday.name : "";
 	};
 
 	return (
@@ -169,6 +177,8 @@ function MonthCard(props: MonthCardProps) {
 						if (!date) return <div class="aspect-square" />;
 
 						const status = getDayStatus(date);
+						const holidayName =
+							status === "holiday" ? getHolidayName(date) : "";
 						let dayClass =
 							"aspect-square flex items-center justify-center text-xs rounded-md transition-all";
 
@@ -177,13 +187,12 @@ function MonthCard(props: MonthCardProps) {
 								dayClass +=
 									" bg-cyan-500 text-white font-bold shadow-lg shadow-cyan-500/20 scale-110 z-10";
 								break;
-							case "period-holiday":
 							case "period-weekend":
 								dayClass += " bg-cyan-500/20 text-cyan-200";
 								break;
 							case "holiday":
 								dayClass +=
-									" bg-blue-500/20 text-blue-300 border border-blue-500/30";
+									" bg-blue-500/20 text-blue-300 border border-blue-500/30 font-semibold";
 								break;
 							case "weekend":
 								dayClass += " text-slate-600 bg-slate-800/30";
@@ -193,7 +202,7 @@ function MonthCard(props: MonthCardProps) {
 						}
 
 						return (
-							<div class={dayClass} title={status}>
+							<div class={dayClass} title={holidayName || status}>
 								{date.getDate()}
 							</div>
 						);

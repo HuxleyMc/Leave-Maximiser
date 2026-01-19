@@ -14,7 +14,7 @@ export function getHolidays(
 		hd.init(countryCode);
 	}
 
-	const holidays = hd.getHolidays(year);
+	const holidays = hd.getHolidays(year).filter((h) => h.type === "public");
 
 	return holidays.map((h) => ({
 		date: h.date.split(" ")[0],
