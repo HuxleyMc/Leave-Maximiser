@@ -121,7 +121,8 @@ function MonthCard(props: MonthCardProps) {
 
 		// Actual days
 		for (let i = 1; i <= totalDays; i++) {
-			days.push(new Date(props.year, props.monthIndex, i));
+			// Use UTC date to ensure consistency regardless of timezone
+			days.push(new Date(Date.UTC(props.year, props.monthIndex, i)));
 		}
 
 		return days;
@@ -152,7 +153,11 @@ function MonthCard(props: MonthCardProps) {
 	};
 
 	const getHolidayName = (date: Date) => {
-		const dateStr = date.toISOString().split("T")[0];
+		const year = date.getUTCFullYear();
+		const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+		const day = String(date.getUTCDate()).padStart(2, "0");
+		const dateStr = `${year}-${month}-${day}`;
+
 		const holiday = props.holidays.find((h) => h.date === dateStr);
 		return holiday ? holiday.name : "";
 	};
@@ -203,7 +208,7 @@ function MonthCard(props: MonthCardProps) {
 
 						return (
 							<div class={dayClass} title={holidayName || status}>
-								{date.getDate()}
+								{date.getUTCDate()}
 							</div>
 						);
 					}}
