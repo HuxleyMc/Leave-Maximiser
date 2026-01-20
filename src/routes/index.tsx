@@ -77,12 +77,12 @@ function Home() {
 
 	return (
 		<div class="min-h-screen bg-slate-900 text-slate-100 font-sans selection:bg-cyan-500 selection:text-white">
-			<div class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-				<div class="text-center mb-16">
-					<h1 class="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tight mb-4">
+			<div class="max-w-7xl mx-auto px-4 py-8 md:py-12 sm:px-6 lg:px-8">
+				<div class="text-center mb-10 md:mb-16">
+					<h1 class="text-3xl sm:text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tight mb-4">
 						Leave Maximiser
 					</h1>
-					<p class="text-lg text-slate-400 max-w-2xl mx-auto">
+					<p class="text-base md:text-lg text-slate-400 max-w-2xl mx-auto">
 						Turn your annual leave into extended vacations. We analyze public
 						holidays to find the perfect dates to book.
 					</p>
@@ -90,7 +90,7 @@ function Home() {
 
 				<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 					<div class="lg:col-span-4 space-y-6">
-						<div class="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 shadow-xl">
+						<div class="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-4 md:p-6 shadow-xl">
 							<h2 class="text-xl font-semibold text-white mb-6 flex items-center gap-2">
 								<span class="w-1 h-6 bg-cyan-500 rounded-full" />
 								Configuration
@@ -192,6 +192,7 @@ function Home() {
 										class="h-5 w-5"
 										viewBox="0 0 20 20"
 										fill="currentColor"
+										aria-hidden="true"
 									>
 										<path
 											fill-rule="evenodd"
@@ -237,6 +238,7 @@ function Home() {
 									fill="none"
 									viewBox="0 0 24 24"
 									stroke="currentColor"
+									aria-hidden="true"
 								>
 									<path
 										stroke-linecap="round"
@@ -259,6 +261,7 @@ function Home() {
 										fill="none"
 										viewBox="0 0 24 24"
 										stroke="currentColor"
+										aria-hidden="true"
 									>
 										<path
 											stroke-linecap="round"
@@ -276,7 +279,7 @@ function Home() {
 							{(res) => (
 								<div class="space-y-8 animate-fade-in">
 									<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-										<div class="bg-slate-800/50 p-5 rounded-2xl border border-slate-700/50">
+										<div class="bg-slate-800/50 p-4 md:p-5 rounded-2xl border border-slate-700/50">
 											<div class="text-sm text-slate-400 mb-1">
 												Total Days Off
 											</div>
@@ -287,7 +290,7 @@ function Home() {
 												From {res().totalLeaveDaysUsed} leave days
 											</div>
 										</div>
-										<div class="bg-slate-800/50 p-5 rounded-2xl border border-slate-700/50">
+										<div class="bg-slate-800/50 p-4 md:p-5 rounded-2xl border border-slate-700/50">
 											<div class="text-sm text-slate-400 mb-1">
 												Efficiency Score
 											</div>
@@ -301,7 +304,7 @@ function Home() {
 												Avg return on investment
 											</div>
 										</div>
-										<div class="bg-slate-800/50 p-5 rounded-2xl border border-slate-700/50">
+										<div class="bg-slate-800/50 p-4 md:p-5 rounded-2xl border border-slate-700/50">
 											<div class="text-sm text-slate-400 mb-1">
 												Longest Break
 											</div>
@@ -352,13 +355,13 @@ function Home() {
 											<div class="space-y-4">
 												<For each={res().leavePeriods}>
 													{(period) => (
-														<div class="group relative bg-slate-800 hover:bg-slate-750 border border-slate-700 rounded-2xl p-6 transition-all hover:shadow-lg hover:shadow-cyan-900/20 hover:border-cyan-500/30 overflow-hidden">
+														<div class="group relative bg-slate-800 hover:bg-slate-750 border border-slate-700 rounded-2xl p-4 md:p-6 transition-all hover:shadow-lg hover:shadow-cyan-900/20 hover:border-cyan-500/30 overflow-hidden">
 															<div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-500 to-blue-600"></div>
 
 															<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
 																<div class="flex-1">
 																	<div class="flex items-baseline gap-3 mb-2">
-																		<span class="text-2xl font-bold text-white">
+																		<span class="text-xl md:text-2xl font-bold text-white">
 																			{dateFormatter.format(
 																				new Date(period.start),
 																			)}
@@ -366,7 +369,7 @@ function Home() {
 																		<span class="text-slate-500 font-light">
 																			to
 																		</span>
-																		<span class="text-2xl font-bold text-white">
+																		<span class="text-xl md:text-2xl font-bold text-white">
 																			{dateFormatter.format(
 																				new Date(period.end),
 																			)}
@@ -383,7 +386,7 @@ function Home() {
 																	</div>
 																</div>
 
-																<div class="flex items-center gap-6">
+																<div class="flex items-center gap-4 md:gap-6">
 																	<div class="text-center">
 																		<div class="text-xs text-slate-400 uppercase tracking-wider mb-1">
 																			Take

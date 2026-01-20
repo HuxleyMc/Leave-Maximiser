@@ -17,7 +17,7 @@ export default function CalendarView(props: CalendarViewProps) {
 			<Show when={props.leavePeriods.length > 0}>
 				<CalendarLegend />
 			</Show>
-			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fade-in">
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 animate-fade-in">
 				<For each={months}>
 					{(monthIndex) => (
 						<MonthCard
@@ -163,7 +163,7 @@ function MonthCard(props: MonthCardProps) {
 	};
 
 	return (
-		<div class="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 flex flex-col">
+		<div class="bg-slate-800/50 border border-slate-700/50 rounded-xl p-3 md:p-4 flex flex-col">
 			<h3 class="text-slate-200 font-semibold mb-3 text-center">
 				{monthName()}
 			</h3>

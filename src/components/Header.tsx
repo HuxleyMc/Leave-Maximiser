@@ -21,9 +21,7 @@ export default function Header() {
 					<Menu size={24} />
 				</button>
 				<h1 class="ml-4 text-xl font-semibold">
-					<Link to="/">
-						Leave Maximiser
-					</Link>
+					<Link to="/">Leave Maximiser</Link>
 				</h1>
 			</header>
 
