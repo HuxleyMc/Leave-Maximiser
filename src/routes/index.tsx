@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/solid-router";
 import { useStore } from "@tanstack/solid-store";
+import { ChevronDown, ChevronUp } from "lucide-solid";
 import { createEffect, createSignal, For, Show } from "solid-js";
 import CalendarView from "../components/CalendarView";
 import { getHolidays } from "../lib/holidays";
@@ -35,6 +36,7 @@ function Home() {
 	const [error, setError] = createSignal<string | null>(null);
 	const [holidays, setHolidays] = createSignal<PublicHoliday[]>([]);
 	const [viewMode, setViewMode] = createSignal<"list" | "calendar">("list");
+	const [showHolidays, setShowHolidays] = createSignal(false);
 
 	const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 		day: "numeric",
@@ -104,22 +106,27 @@ function Home() {
 									>
 										Country
 									</label>
-									<select
-										id="country"
-										value={country()}
-										onChange={(e) => setCountry(e.target.value)}
-										class="w-full bg-slate-900/50 border border-slate-600 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
-									>
-										<For each={COUNTRIES}>
-											{(c) => <option value={c.code}>{c.name}</option>}
-										</For>
-										<option value="OTHER">Other (Enter Code)</option>
-									</select>
+									<div class="relative">
+										<select
+											id="country"
+											value={country()}
+											onChange={(e) => setCountry(e.target.value)}
+											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all appearance-none"
+										>
+											<For each={COUNTRIES}>
+												{(c) => <option value={c.code}>{c.name}</option>}
+											</For>
+											<option value="OTHER">Other (Enter Code)</option>
+										</select>
+										<div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500">
+											<ChevronDown size={16} />
+										</div>
+									</div>
 									<Show when={country() === "OTHER"}>
 										<input
 											type="text"
 											placeholder="e.g. BR"
-											class="mt-2 w-full bg-slate-900/50 border border-slate-600 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
+											class="mt-2 w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
 											onInput={(e) => setCountry(e.target.value.toUpperCase())}
 										/>
 									</Show>
@@ -140,7 +147,7 @@ function Home() {
 											value={region()}
 											placeholder="e.g. NY"
 											onInput={(e) => setRegion(e.target.value.toUpperCase())}
-											class="w-full bg-slate-900/50 border border-slate-600 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all placeholder:text-slate-600"
+											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all placeholder:text-slate-600"
 										/>
 									</div>
 									<div>
@@ -156,7 +163,7 @@ function Home() {
 											value={year()}
 											min={new Date().getFullYear()}
 											onInput={(e) => setYear(Number(e.target.value))}
-											class="w-full bg-slate-900/50 border border-slate-600 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
+											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
 										/>
 									</div>
 								</div>
@@ -174,9 +181,9 @@ function Home() {
 											type="number"
 											value={allowance()}
 											onInput={(e) => setAllowance(Number(e.target.value))}
-											class="w-full bg-slate-900/50 border border-slate-600 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
+											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
 										/>
-										<span class="absolute right-4 top-2.5 text-slate-500">
+										<span class="absolute right-4 top-3 text-slate-500">
 											days
 										</span>
 									</div>
@@ -185,7 +192,7 @@ function Home() {
 								<button
 									onClick={handleMaximize}
 									type="button"
-									class="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg shadow-cyan-500/20 transform transition-all active:scale-[0.98] flex justify-center items-center gap-2 cursor-pointer"
+									class="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold h-12 px-6 rounded-lg shadow-lg shadow-cyan-500/20 transform transition-all active:scale-[0.98] flex justify-center items-center gap-2 cursor-pointer"
 								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -205,27 +212,46 @@ function Home() {
 							</div>
 						</div>
 
-						<div class="bg-slate-800/30 rounded-2xl p-6 border border-slate-700/30 mt-6">
-							<h3 class="text-sm font-semibold text-slate-400 mb-3 uppercase tracking-wider">
-								Public Holidays Found: {holidays().length}
-							</h3>
-							<div class="max-h-48 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
-								<For each={holidays()}>
-									{(h) => (
-										<div class="flex justify-between text-xs text-slate-300 py-1 border-b border-slate-700/50 last:border-0">
-											<span>{h.name}</span>
-											<span class="font-mono text-slate-500">
-												{h.date.split(" ")[0]}
-											</span>
-										</div>
-									)}
-								</For>
-								<Show when={holidays().length === 0}>
-									<p class="text-xs text-slate-500 italic">
-										No holidays loaded yet.
-									</p>
-								</Show>
-							</div>
+						<div class="bg-slate-800/30 rounded-2xl border border-slate-700/30 overflow-hidden">
+							<button
+								type="button"
+								onClick={() => setShowHolidays(!showHolidays())}
+								class="w-full flex items-center justify-between p-4 text-left hover:bg-slate-800/50 transition-colors"
+							>
+								<h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider">
+									Public Holidays Found: {holidays().length}
+								</h3>
+								<div class="text-slate-400">
+									<Show
+										when={showHolidays()}
+										fallback={<ChevronDown size={20} />}
+									>
+										<ChevronUp size={20} />
+									</Show>
+								</div>
+							</button>
+
+							<Show when={showHolidays()}>
+								<div class="px-6 pb-6 pt-2 border-t border-slate-700/30 max-h-64 overflow-y-auto custom-scrollbar">
+									<div class="space-y-2">
+										<For each={holidays()}>
+											{(h) => (
+												<div class="flex justify-between text-xs text-slate-300 py-2 border-b border-slate-700/50 last:border-0">
+													<span>{h.name}</span>
+													<span class="font-mono text-slate-500">
+														{h.date.split(" ")[0]}
+													</span>
+												</div>
+											)}
+										</For>
+										<Show when={holidays().length === 0}>
+											<p class="text-xs text-slate-500 italic">
+												No holidays loaded yet.
+											</p>
+										</Show>
+									</div>
+								</div>
+							</Show>
 						</div>
 					</div>
 
@@ -278,8 +304,9 @@ function Home() {
 						>
 							{(res) => (
 								<div class="space-y-8 animate-fade-in">
-									<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-										<div class="bg-slate-800/50 p-4 md:p-5 rounded-2xl border border-slate-700/50">
+									{/* Stats Carousel on Mobile, Grid on Desktop */}
+									<div class="flex md:grid md:grid-cols-3 gap-4 overflow-x-auto pb-4 md:pb-0 snap-x md:snap-none -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
+										<div class="min-w-[85%] md:min-w-0 snap-center bg-slate-800/50 p-5 rounded-2xl border border-slate-700/50 flex flex-col justify-center">
 											<div class="text-sm text-slate-400 mb-1">
 												Total Days Off
 											</div>
@@ -290,7 +317,7 @@ function Home() {
 												From {res().totalLeaveDaysUsed} leave days
 											</div>
 										</div>
-										<div class="bg-slate-800/50 p-4 md:p-5 rounded-2xl border border-slate-700/50">
+										<div class="min-w-[85%] md:min-w-0 snap-center bg-slate-800/50 p-5 rounded-2xl border border-slate-700/50 flex flex-col justify-center">
 											<div class="text-sm text-slate-400 mb-1">
 												Efficiency Score
 											</div>
@@ -304,7 +331,7 @@ function Home() {
 												Avg return on investment
 											</div>
 										</div>
-										<div class="bg-slate-800/50 p-4 md:p-5 rounded-2xl border border-slate-700/50">
+										<div class="min-w-[85%] md:min-w-0 snap-center bg-slate-800/50 p-5 rounded-2xl border border-slate-700/50 flex flex-col justify-center">
 											<div class="text-sm text-slate-400 mb-1">
 												Longest Break
 											</div>
@@ -321,11 +348,11 @@ function Home() {
 									</div>
 
 									<div class="flex justify-center mb-6">
-										<div class="bg-slate-800/50 p-1 rounded-lg flex gap-1 border border-slate-700/50">
+										<div class="bg-slate-800/50 p-1 rounded-lg flex gap-1 border border-slate-700/50 w-full md:w-auto">
 											<button
 												type="button"
 												onClick={() => setViewMode("list")}
-												class={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+												class={`flex-1 md:flex-none px-4 py-2 rounded-md text-sm font-medium transition-all ${
 													viewMode() === "list"
 														? "bg-slate-700 text-white shadow-sm"
 														: "text-slate-400 hover:text-white hover:bg-slate-700/50"
@@ -336,7 +363,7 @@ function Home() {
 											<button
 												type="button"
 												onClick={() => setViewMode("calendar")}
-												class={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+												class={`flex-1 md:flex-none px-4 py-2 rounded-md text-sm font-medium transition-all ${
 													viewMode() === "calendar"
 														? "bg-slate-700 text-white shadow-sm"
 														: "text-slate-400 hover:text-white hover:bg-slate-700/50"
@@ -355,13 +382,13 @@ function Home() {
 											<div class="space-y-4">
 												<For each={res().leavePeriods}>
 													{(period) => (
-														<div class="group relative bg-slate-800 hover:bg-slate-750 border border-slate-700 rounded-2xl p-4 md:p-6 transition-all hover:shadow-lg hover:shadow-cyan-900/20 hover:border-cyan-500/30 overflow-hidden">
+														<div class="group relative bg-slate-800 hover:bg-slate-750 border border-slate-700 rounded-2xl p-5 transition-all hover:shadow-lg hover:shadow-cyan-900/20 hover:border-cyan-500/30 overflow-hidden">
 															<div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-500 to-blue-600"></div>
 
-															<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-																<div class="flex-1">
-																	<div class="flex items-baseline gap-3 mb-2">
-																		<span class="text-xl md:text-2xl font-bold text-white">
+															<div class="flex flex-col gap-6">
+																<div>
+																	<div class="flex items-baseline gap-3 mb-3">
+																		<span class="text-2xl font-bold text-white">
 																			{dateFormatter.format(
 																				new Date(period.start),
 																			)}
@@ -369,7 +396,7 @@ function Home() {
 																		<span class="text-slate-500 font-light">
 																			to
 																		</span>
-																		<span class="text-xl md:text-2xl font-bold text-white">
+																		<span class="text-2xl font-bold text-white">
 																			{dateFormatter.format(
 																				new Date(period.end),
 																			)}
@@ -378,7 +405,7 @@ function Home() {
 																	<div class="flex flex-wrap gap-2">
 																		<For each={period.holidays}>
 																			{(h) => (
-																				<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-300 border border-blue-500/20">
+																				<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-500/10 text-blue-300 border border-blue-500/20">
 																					{h.name}
 																				</span>
 																			)}
@@ -386,7 +413,7 @@ function Home() {
 																	</div>
 																</div>
 
-																<div class="flex items-center gap-4 md:gap-6">
+																<div class="grid grid-cols-3 gap-4 pt-5 border-t border-slate-700/50">
 																	<div class="text-center">
 																		<div class="text-xs text-slate-400 uppercase tracking-wider mb-1">
 																			Take
@@ -395,8 +422,7 @@ function Home() {
 																			{period.leaveDaysRequired}
 																		</div>
 																	</div>
-																	<div class="w-px h-8 bg-slate-700"></div>
-																	<div class="text-center">
+																	<div class="text-center border-l border-slate-700/50">
 																		<div class="text-xs text-slate-400 uppercase tracking-wider mb-1">
 																			Get
 																		</div>
@@ -404,8 +430,7 @@ function Home() {
 																			{period.daysOff}
 																		</div>
 																	</div>
-																	<div class="hidden md:block w-px h-8 bg-slate-700"></div>
-																	<div class="hidden md:block text-center min-w-[60px]">
+																	<div class="text-center border-l border-slate-700/50">
 																		<div class="text-xs text-slate-400 uppercase tracking-wider mb-1">
 																			Eff
 																		</div>
