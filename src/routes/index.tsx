@@ -102,7 +102,7 @@ function Home() {
 								<div>
 									<label
 										for="country"
-										class="block text-sm font-medium text-slate-400 mb-1"
+										class="block text-base font-medium text-slate-400 mb-1"
 									>
 										Country
 									</label>
@@ -111,7 +111,7 @@ function Home() {
 											id="country"
 											value={country()}
 											onChange={(e) => setCountry(e.target.value)}
-											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all appearance-none"
+											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white text-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all appearance-none"
 										>
 											<For each={COUNTRIES}>
 												{(c) => <option value={c.code}>{c.name}</option>}
@@ -126,7 +126,7 @@ function Home() {
 										<input
 											type="text"
 											placeholder="e.g. BR"
-											class="mt-2 w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
+											class="mt-2 w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white text-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
 											onInput={(e) => setCountry(e.target.value.toUpperCase())}
 										/>
 									</Show>
@@ -136,10 +136,10 @@ function Home() {
 									<div>
 										<label
 											for="state"
-											class="block text-sm font-medium text-slate-400 mb-1"
+											class="block text-base font-medium text-slate-400 mb-1"
 										>
 											State / Region{" "}
-											<span class="text-slate-600 text-xs">(Opt)</span>
+											<span class="text-slate-600 text-sm">(Opt)</span>
 										</label>
 										<input
 											id="state"
@@ -147,13 +147,13 @@ function Home() {
 											value={region()}
 											placeholder="e.g. NY"
 											onInput={(e) => setRegion(e.target.value.toUpperCase())}
-											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all placeholder:text-slate-600"
+											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white text-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all placeholder:text-slate-600"
 										/>
 									</div>
 									<div>
 										<label
 											for="year"
-											class="block text-sm font-medium text-slate-400 mb-1"
+											class="block text-base font-medium text-slate-400 mb-1"
 										>
 											Year
 										</label>
@@ -163,7 +163,7 @@ function Home() {
 											value={year()}
 											min={new Date().getFullYear()}
 											onInput={(e) => setYear(Number(e.target.value))}
-											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
+											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white text-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
 										/>
 									</div>
 								</div>
@@ -171,7 +171,7 @@ function Home() {
 								<div>
 									<label
 										for="allowance"
-										class="block text-sm font-medium text-slate-400 mb-1"
+										class="block text-base font-medium text-slate-400 mb-1"
 									>
 										Annual Leave Days
 									</label>
@@ -181,9 +181,9 @@ function Home() {
 											type="number"
 											value={allowance()}
 											onInput={(e) => setAllowance(Number(e.target.value))}
-											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
+											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white text-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
 										/>
-										<span class="absolute right-4 top-3 text-slate-500">
+										<span class="absolute right-4 top-3 text-slate-500 text-base">
 											days
 										</span>
 									</div>
@@ -192,7 +192,7 @@ function Home() {
 								<button
 									onClick={handleMaximize}
 									type="button"
-									class="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold h-12 px-6 rounded-lg shadow-lg shadow-cyan-500/20 transform transition-all active:scale-[0.98] flex justify-center items-center gap-2 cursor-pointer"
+									class="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-lg h-12 px-6 rounded-lg shadow-lg shadow-cyan-500/20 transform transition-all active:scale-[0.98] flex justify-center items-center gap-2 cursor-pointer"
 								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -218,7 +218,7 @@ function Home() {
 								onClick={() => setShowHolidays(!showHolidays())}
 								class="w-full flex items-center justify-between p-4 text-left hover:bg-slate-800/50 transition-colors"
 							>
-								<h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider">
+								<h3 class="text-base font-semibold text-slate-400 uppercase tracking-wider">
 									Public Holidays Found: {holidays().length}
 								</h3>
 								<div class="text-slate-400">
@@ -236,7 +236,7 @@ function Home() {
 									<div class="space-y-2">
 										<For each={holidays()}>
 											{(h) => (
-												<div class="flex justify-between text-xs text-slate-300 py-2 border-b border-slate-700/50 last:border-0">
+												<div class="flex justify-between text-sm text-slate-300 py-2 border-b border-slate-700/50 last:border-0">
 													<span>{h.name}</span>
 													<span class="font-mono text-slate-500">
 														{h.date.split(" ")[0]}
@@ -245,7 +245,7 @@ function Home() {
 											)}
 										</For>
 										<Show when={holidays().length === 0}>
-											<p class="text-xs text-slate-500 italic">
+											<p class="text-sm text-slate-500 italic">
 												No holidays loaded yet.
 											</p>
 										</Show>
@@ -307,41 +307,41 @@ function Home() {
 									{/* Stats Carousel on Mobile, Grid on Desktop */}
 									<div class="flex md:grid md:grid-cols-3 gap-4 overflow-x-auto pb-4 md:pb-0 snap-x md:snap-none -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
 										<div class="min-w-[85%] md:min-w-0 snap-center bg-slate-800/50 p-5 rounded-2xl border border-slate-700/50 flex flex-col justify-center">
-											<div class="text-sm text-slate-400 mb-1">
+											<div class="text-base text-slate-400 mb-1">
 												Total Days Off
 											</div>
-											<div class="text-3xl font-bold text-white">
+											<div class="text-4xl font-bold text-white">
 												{res().totalDaysOff}
 											</div>
-											<div class="text-xs text-green-400 mt-2">
+											<div class="text-sm text-green-400 mt-2">
 												From {res().totalLeaveDaysUsed} leave days
 											</div>
 										</div>
 										<div class="min-w-[85%] md:min-w-0 snap-center bg-slate-800/50 p-5 rounded-2xl border border-slate-700/50 flex flex-col justify-center">
-											<div class="text-sm text-slate-400 mb-1">
+											<div class="text-base text-slate-400 mb-1">
 												Efficiency Score
 											</div>
-											<div class="text-3xl font-bold text-cyan-400">
+											<div class="text-4xl font-bold text-cyan-400">
 												{(
 													res().totalDaysOff / (res().totalLeaveDaysUsed || 1)
 												).toFixed(1)}
 												x
 											</div>
-											<div class="text-xs text-slate-500 mt-2">
+											<div class="text-sm text-slate-500 mt-2">
 												Avg return on investment
 											</div>
 										</div>
 										<div class="min-w-[85%] md:min-w-0 snap-center bg-slate-800/50 p-5 rounded-2xl border border-slate-700/50 flex flex-col justify-center">
-											<div class="text-sm text-slate-400 mb-1">
+											<div class="text-base text-slate-400 mb-1">
 												Longest Break
 											</div>
-											<div class="text-3xl font-bold text-white">
+											<div class="text-4xl font-bold text-white">
 												{Math.max(
 													...res().leavePeriods.map((p) => p.daysOff),
 													0,
 												)}
 											</div>
-											<div class="text-xs text-slate-500 mt-2">
+											<div class="text-sm text-slate-500 mt-2">
 												Consecutive days
 											</div>
 										</div>
@@ -352,7 +352,7 @@ function Home() {
 											<button
 												type="button"
 												onClick={() => setViewMode("list")}
-												class={`flex-1 md:flex-none px-4 py-2 rounded-md text-sm font-medium transition-all ${
+												class={`flex-1 md:flex-none px-4 py-2 rounded-md text-base font-medium transition-all ${
 													viewMode() === "list"
 														? "bg-slate-700 text-white shadow-sm"
 														: "text-slate-400 hover:text-white hover:bg-slate-700/50"
@@ -363,7 +363,7 @@ function Home() {
 											<button
 												type="button"
 												onClick={() => setViewMode("calendar")}
-												class={`flex-1 md:flex-none px-4 py-2 rounded-md text-sm font-medium transition-all ${
+												class={`flex-1 md:flex-none px-4 py-2 rounded-md text-base font-medium transition-all ${
 													viewMode() === "calendar"
 														? "bg-slate-700 text-white shadow-sm"
 														: "text-slate-400 hover:text-white hover:bg-slate-700/50"
@@ -388,15 +388,15 @@ function Home() {
 															<div class="flex flex-col gap-6">
 																<div>
 																	<div class="flex items-baseline gap-3 mb-3">
-																		<span class="text-2xl font-bold text-white">
+																		<span class="text-3xl font-bold text-white">
 																			{dateFormatter.format(
 																				new Date(period.start),
 																			)}
 																		</span>
-																		<span class="text-slate-500 font-light">
+																		<span class="text-slate-500 font-light text-lg">
 																			to
 																		</span>
-																		<span class="text-2xl font-bold text-white">
+																		<span class="text-3xl font-bold text-white">
 																			{dateFormatter.format(
 																				new Date(period.end),
 																			)}
@@ -405,7 +405,7 @@ function Home() {
 																	<div class="flex flex-wrap gap-2">
 																		<For each={period.holidays}>
 																			{(h) => (
-																				<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-500/10 text-blue-300 border border-blue-500/20">
+																				<span class="inline-flex items-center px-2.5 py-1 rounded-full text-sm font-medium bg-blue-500/10 text-blue-300 border border-blue-500/20">
 																					{h.name}
 																				</span>
 																			)}
@@ -415,26 +415,26 @@ function Home() {
 
 																<div class="grid grid-cols-3 gap-4 pt-5 border-t border-slate-700/50">
 																	<div class="text-center">
-																		<div class="text-xs text-slate-400 uppercase tracking-wider mb-1">
+																		<div class="text-sm text-slate-400 uppercase tracking-wider mb-1">
 																			Take
 																		</div>
-																		<div class="text-xl font-bold text-slate-200">
+																		<div class="text-2xl font-bold text-slate-200">
 																			{period.leaveDaysRequired}
 																		</div>
 																	</div>
 																	<div class="text-center border-l border-slate-700/50">
-																		<div class="text-xs text-slate-400 uppercase tracking-wider mb-1">
+																		<div class="text-sm text-slate-400 uppercase tracking-wider mb-1">
 																			Get
 																		</div>
-																		<div class="text-xl font-bold text-cyan-400">
+																		<div class="text-2xl font-bold text-cyan-400">
 																			{period.daysOff}
 																		</div>
 																	</div>
 																	<div class="text-center border-l border-slate-700/50">
-																		<div class="text-xs text-slate-400 uppercase tracking-wider mb-1">
+																		<div class="text-sm text-slate-400 uppercase tracking-wider mb-1">
 																			Eff
 																		</div>
-																		<div class="text-lg font-bold text-white">
+																		<div class="text-2xl font-bold text-white">
 																			{(
 																				period.daysOff /
 																				(period.leaveDaysRequired || 1)
