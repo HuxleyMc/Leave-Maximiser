@@ -1,62 +1,18 @@
 import { Link } from "@tanstack/solid-router";
-import { Home, Menu, X } from "lucide-solid";
-
-import { createSignal } from "solid-js";
 
 export default function Header() {
-	const [isOpen, setIsOpen] = createSignal(false);
-	const [_groupedExpanded, _setGroupedExpanded] = createSignal<
-		Record<string, boolean>
-	>({});
-
 	return (
-		<>
-			<header class="p-4 flex items-center bg-gray-800 text-white shadow-lg">
-				<button
-					type="button"
-					onClick={() => setIsOpen(true)}
-					class="p-2 hover:bg-gray-700 rounded-lg transition-colors"
-					aria-label="Open menu"
-				>
-					<Menu size={24} />
-				</button>
-				<h1 class="ml-4 text-xl font-semibold">
-					<Link to="/">Leave Maximiser</Link>
-				</h1>
-			</header>
-
-			<aside
-				class={`fixed top-0 left-0 h-full w-80 bg-gray-900 text-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out flex flex-col ${
-					isOpen() ? "translate-x-0" : "-translate-x-full"
-				}`}
-			>
-				<div class="flex items-center justify-between p-4 border-b border-gray-700">
-					<h2 class="text-xl font-bold">Navigation</h2>
-					<button
-						type="button"
-						onClick={() => setIsOpen(false)}
-						class="p-2 hover:bg-gray-800 rounded-lg transition-colors"
-						aria-label="Close menu"
-					>
-						<X size={24} />
-					</button>
+		<header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-700/50">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-center sm:justify-between">
+				<div class="flex items-center gap-3">
+					<div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-lg shadow-lg shadow-cyan-500/20 flex items-center justify-center text-white font-bold text-lg">
+						L
+					</div>
+					<h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-100 to-blue-100 tracking-tight">
+						<Link to="/">Leave Maximiser</Link>
+					</h1>
 				</div>
-
-				<nav class="flex-1 p-4 overflow-y-auto">
-					<Link
-						to="/"
-						onClick={() => setIsOpen(false)}
-						class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-						activeProps={{
-							class:
-								"flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-						}}
-					>
-						<Home size={20} />
-						<span class="font-medium">Home</span>
-					</Link>
-				</nav>
-			</aside>
-		</>
+			</div>
+		</header>
 	);
 }
