@@ -14,6 +14,11 @@ import styleCss from "../styles.css?url";
 
 export const Route = createRootRouteWithContext()({
 	head: () => ({
+		meta: [
+			{ charset: "utf-8" },
+			{ name: "viewport", content: "width=device-width, initial-scale=1" },
+			{ title: "Leave Maximiser" },
+		],
 		links: [{ rel: "stylesheet", href: styleCss }],
 	}),
 	shellComponent: RootComponent,
