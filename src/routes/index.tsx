@@ -78,7 +78,7 @@ function Home() {
 	});
 
 	return (
-		<div class="min-h-screen bg-slate-900 text-slate-100 font-sans selection:bg-cyan-500 selection:text-white">
+		<div class="min-h-screen bg-slate-900 text-slate-100 font-sans selection:bg-cyan-500 selection:text-white pb-24 md:pb-0">
 			<div class="max-w-7xl mx-auto px-4 py-8 md:py-12 sm:px-6 lg:px-8">
 				<div class="text-center mb-10 md:mb-16">
 					<h1 class="text-3xl sm:text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tight mb-4">
@@ -111,7 +111,7 @@ function Home() {
 											id="country"
 											value={country()}
 											onChange={(e) => setCountry(e.target.value)}
-											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white text-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all appearance-none"
+											class="w-full h-14 bg-slate-900/50 border border-slate-600 rounded-xl px-4 text-white text-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all appearance-none"
 										>
 											<For each={COUNTRIES}>
 												{(c) => <option value={c.code}>{c.name}</option>}
@@ -119,14 +119,14 @@ function Home() {
 											<option value="OTHER">Other (Enter Code)</option>
 										</select>
 										<div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500">
-											<ChevronDown size={16} />
+											<ChevronDown size={20} />
 										</div>
 									</div>
 									<Show when={country() === "OTHER"}>
 										<input
 											type="text"
 											placeholder="e.g. BR"
-											class="mt-2 w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white text-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
+											class="mt-2 w-full h-14 bg-slate-900/50 border border-slate-600 rounded-xl px-4 text-white text-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
 											onInput={(e) => setCountry(e.target.value.toUpperCase())}
 										/>
 									</Show>
@@ -147,7 +147,7 @@ function Home() {
 											value={region()}
 											placeholder="e.g. NY"
 											onInput={(e) => setRegion(e.target.value.toUpperCase())}
-											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white text-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all placeholder:text-slate-600"
+											class="w-full h-14 bg-slate-900/50 border border-slate-600 rounded-xl px-4 text-white text-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all placeholder:text-slate-600"
 										/>
 									</div>
 									<div>
@@ -163,7 +163,7 @@ function Home() {
 											value={year()}
 											min={new Date().getFullYear()}
 											onInput={(e) => setYear(Number(e.target.value))}
-											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white text-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
+											class="w-full h-14 bg-slate-900/50 border border-slate-600 rounded-xl px-4 text-white text-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
 										/>
 									</div>
 								</div>
@@ -181,9 +181,9 @@ function Home() {
 											type="number"
 											value={allowance()}
 											onInput={(e) => setAllowance(Number(e.target.value))}
-											class="w-full h-12 bg-slate-900/50 border border-slate-600 rounded-lg px-4 text-white text-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
+											class="w-full h-14 bg-slate-900/50 border border-slate-600 rounded-xl px-4 text-white text-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all"
 										/>
-										<span class="absolute right-4 top-3 text-slate-500 text-base">
+										<span class="absolute right-4 top-4 text-slate-500 text-base">
 											days
 										</span>
 									</div>
@@ -192,7 +192,7 @@ function Home() {
 								<button
 									onClick={handleMaximize}
 									type="button"
-									class="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-lg h-12 px-6 rounded-lg shadow-lg shadow-cyan-500/20 transform transition-all active:scale-[0.98] flex justify-center items-center gap-2 cursor-pointer"
+									class="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-lg h-12 px-6 rounded-xl shadow-lg shadow-cyan-500/20 transform transition-all active:scale-[0.98] flex justify-center items-center gap-2 cursor-pointer md:flex hidden"
 								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -463,6 +463,29 @@ function Home() {
 						</Show>
 					</div>
 				</div>
+			</div>
+
+			<div class="fixed bottom-0 left-0 right-0 bg-slate-900/80 backdrop-blur-xl border-t border-slate-700/50 p-4 md:hidden z-50 animate-slide-up-fade">
+				<button
+					onClick={handleMaximize}
+					type="button"
+					class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-lg h-14 rounded-xl shadow-lg shadow-cyan-500/20 transform transition-all active:scale-[0.98] flex justify-center items-center gap-2 cursor-pointer"
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-6 w-6"
+						viewBox="0 0 20 20"
+						fill="currentColor"
+						aria-hidden="true"
+					>
+						<path
+							fill-rule="evenodd"
+							d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+							clip-rule="evenodd"
+						/>
+					</svg>
+					Maximize My Leave
+				</button>
 			</div>
 		</div>
 	);

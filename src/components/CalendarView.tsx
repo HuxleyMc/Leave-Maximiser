@@ -185,7 +185,7 @@ function MonthCard(props: MonthCardProps) {
 						const holidayName =
 							status === "holiday" ? getHolidayName(date) : "";
 						let dayClass =
-							"aspect-square flex items-center justify-center text-xs rounded-md transition-all";
+							"aspect-square flex items-center justify-center text-sm rounded-lg transition-all cursor-default select-none";
 
 						switch (status) {
 							case "leave-day":
