@@ -9,6 +9,7 @@ import { Suspense } from "solid-js";
 import { HydrationScript } from "solid-js/web";
 
 import Header from "../components/Header";
+import VibeKanbanWebCompanionWrapper from "../components/VibeKanbanWebCompanionWrapper";
 
 import styleCss from "../styles.css?url";
 
@@ -32,6 +33,7 @@ function RootComponent() {
 
 					<Outlet />
 					<TanStackRouterDevtools />
+					<VibeKanbanWebCompanionWrapper />
 				</Suspense>
 				<Scripts />
 			</body>
