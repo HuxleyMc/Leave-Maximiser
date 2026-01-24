@@ -13,11 +13,11 @@ export default function CalendarView(props: CalendarViewProps) {
 	const weekDays = ["M", "T", "W", "T", "F", "S", "S"];
 
 	return (
-		<>
+		<div class="space-y-6">
 			<Show when={props.leavePeriods.length > 0}>
 				<CalendarLegend />
 			</Show>
-			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 animate-fade-in">
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
 				<For each={months}>
 					{(monthIndex) => (
 						<MonthCard
@@ -30,7 +30,7 @@ export default function CalendarView(props: CalendarViewProps) {
 					)}
 				</For>
 			</div>
-		</>
+		</div>
 	);
 }
 
@@ -45,43 +45,26 @@ interface MonthCardProps {
 const LEGEND_ITEMS = [
 	{
 		id: "leave-day",
-		label: "Leave Day",
+		label: "Take Leave",
 		colorClass: "bg-cyan-500 text-white font-bold shadow-lg shadow-cyan-500/20",
-		title: "Day you need to book off",
-	},
-	{
-		id: "period-leave",
-		label: "Period Day",
-		colorClass: "bg-cyan-500/20 text-cyan-200",
-		title: "Weekend within your leave period",
 	},
 	{
 		id: "holiday",
 		label: "Public Holiday",
 		colorClass: "bg-blue-500/20 text-blue-300 border border-blue-500/30",
-		title: "Official public holiday",
-	},
-	{
-		id: "weekend",
-		label: "Weekend",
-		colorClass: "text-slate-600 bg-slate-800/30",
-		title: "Weekend",
 	},
 ];
 
 function CalendarLegend() {
 	return (
-		<div class="flex flex-wrap gap-4 justify-center">
+		<div class="flex flex-wrap gap-4 justify-center bg-slate-800/40 p-3 rounded-xl border border-slate-700/50">
 			<For each={LEGEND_ITEMS}>
 				{(item) => (
 					<div class="flex items-center gap-2">
-						<div
-							class={`w-4 h-4 rounded-sm ${item.colorClass}`}
-							title={item.title}
-						>
+						<div class={`w-3.5 h-3.5 rounded-md ${item.colorClass}`}>
 							&nbsp;
 						</div>
-						<span class="text-sm text-slate-300">{item.label}</span>
+						<span class="text-xs font-medium text-slate-300">{item.label}</span>
 					</div>
 				)}
 			</For>
@@ -90,13 +73,10 @@ function CalendarLegend() {
 }
 
 function MonthCard(props: MonthCardProps) {
-	// Helper to get days in month
 	const daysInMonth = () => {
 		return new Date(props.year, props.monthIndex + 1, 0).getDate();
 	};
 
-	// Helper to get the day of the week the month starts on (0 = Mon, 6 = Sun)
-	// JS getDay() returns 0 = Sun, 1 = Mon. We want 0 = Mon, 6 = Sun.
 	const startOffset = () => {
 		const day = new Date(props.year, props.monthIndex, 1).getDay();
 		return day === 0 ? 6 : day - 1;
@@ -108,20 +88,16 @@ function MonthCard(props: MonthCardProps) {
 		});
 	};
 
-	// Generate array of days to render including padding
 	const calendarDays = () => {
 		const days = [];
 		const offset = startOffset();
 		const totalDays = daysInMonth();
 
-		// Padding for start of month
 		for (let i = 0; i < offset; i++) {
 			days.push(null);
 		}
 
-		// Actual days
 		for (let i = 1; i <= totalDays; i++) {
-			// Use UTC date to ensure consistency regardless of timezone
 			days.push(new Date(Date.UTC(props.year, props.monthIndex, i)));
 		}
 
@@ -129,7 +105,6 @@ function MonthCard(props: MonthCardProps) {
 	};
 
 	const getDayStatus = (date: Date) => {
-		// Check if inside any leave period
 		const activePeriod = props.leavePeriods.find((p) => {
 			const start = new Date(p.start);
 			const end = new Date(p.end);
@@ -139,61 +114,45 @@ function MonthCard(props: MonthCardProps) {
 		const isHoliday = isPublicHoliday(date, props.holidays);
 		const isWknd = isWeekend(date);
 
-		// If it's a public holiday, we want to show that distinctively,
-		// even if it's inside a leave period.
 		if (isHoliday) return "holiday";
 
 		if (activePeriod) {
 			if (isWknd) return "period-weekend";
-			return "leave-day"; // This is a day you take off
+			return "leave-day";
 		}
 
 		if (isWknd) return "weekend";
 		return "normal";
 	};
 
-	const getHolidayName = (date: Date) => {
-		const year = date.getUTCFullYear();
-		const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-		const day = String(date.getUTCDate()).padStart(2, "0");
-		const dateStr = `${year}-${month}-${day}`;
-
-		const holiday = props.holidays.find((h) => h.date === dateStr);
-		return holiday ? holiday.name : "";
-	};
-
 	return (
-		<div class="bg-slate-800/50 border border-slate-700/50 rounded-xl p-3 md:p-4 flex flex-col">
-			<h3 class="text-slate-200 font-semibold mb-3 text-center">
+		<div class="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 flex flex-col">
+			<h3 class="text-slate-200 font-semibold mb-3 text-center text-sm uppercase tracking-wide">
 				{monthName()}
 			</h3>
 
 			<div class="grid grid-cols-7 gap-1 text-center">
-				{/* Weekday Headers */}
 				<For each={props.weekDays}>
 					{(day) => (
-						<div class="text-xs font-bold text-slate-500 py-1">{day}</div>
+						<div class="text-[10px] font-bold text-slate-500 py-1">{day}</div>
 					)}
 				</For>
 
-				{/* Days */}
 				<For each={calendarDays()}>
 					{(date) => {
 						if (!date) return <div class="aspect-square" />;
 
 						const status = getDayStatus(date);
-						const holidayName =
-							status === "holiday" ? getHolidayName(date) : "";
 						let dayClass =
-							"aspect-square flex items-center justify-center text-sm rounded-lg transition-all cursor-default select-none";
+							"aspect-square flex items-center justify-center text-xs rounded-md transition-all cursor-default select-none";
 
 						switch (status) {
 							case "leave-day":
 								dayClass +=
-									" bg-cyan-500 text-white font-bold shadow-lg shadow-cyan-500/20 scale-110 z-10";
+									" bg-cyan-500 text-white font-bold shadow-lg shadow-cyan-500/20 z-10";
 								break;
 							case "period-weekend":
-								dayClass += " bg-cyan-500/20 text-cyan-200";
+								dayClass += " bg-cyan-500/10 text-cyan-200/70";
 								break;
 							case "holiday":
 								dayClass +=
@@ -203,14 +162,10 @@ function MonthCard(props: MonthCardProps) {
 								dayClass += " text-slate-600 bg-slate-800/30";
 								break;
 							default:
-								dayClass += " text-slate-400 hover:bg-slate-700/50";
+								dayClass += " text-slate-400";
 						}
 
-						return (
-							<div class={dayClass} title={holidayName || status}>
-								{date.getUTCDate()}
-							</div>
-						);
+						return <div class={dayClass}>{date.getUTCDate()}</div>;
 					}}
 				</For>
 			</div>
